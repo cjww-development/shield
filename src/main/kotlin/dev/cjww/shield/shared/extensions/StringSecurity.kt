@@ -15,14 +15,13 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 object StringSecurity {
-
     private const val ITERATIONS = 120_000
     private const val KEY_LENGTH = 256
 
     fun generateRandomSalt(length: Int): String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + (0..9)
         return (1..length)
-            .map { allowedChars.random()}
+            .map { allowedChars.random() }
             .joinToString("")
     }
 

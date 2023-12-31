@@ -1,0 +1,7 @@
+repos:
+  -   repo: https://github.com/jcchavezs/pre-commit-kotlin
+      rev: HEAD
+      hooks:
+        -   id: ktlint
+            args:
+              - --color

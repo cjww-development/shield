@@ -13,7 +13,6 @@ import dev.cjww.shield.shared.extensions.StringSecurity.hash
 import org.junit.jupiter.api.Test
 
 class StringSecurityTests {
-
     @Test
     fun `generateRandomSalt should produce a string with the correct length`() {
         val testSalt1: String = StringSecurity.generateRandomSalt(16)
