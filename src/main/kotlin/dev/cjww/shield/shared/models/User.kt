@@ -11,7 +11,7 @@ package dev.cjww.shield.shared.models
 
 data class User(
     val id: Int,
-    val username: String,
+    val emailAddress: String,
     val password: String,
     val createdAt: String,
 )

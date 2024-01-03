@@ -22,26 +22,26 @@ class UserTests {
         val testUser: User =
             User(
                 id = 1,
-                username = "testUsername",
+                emailAddress = "test@email.com",
                 password = "testPassword",
                 createdAt = "testDate",
             )
 
         val result: String = mapper.writeValueAsString(testUser)
 
-        val expected: String = """{"id":1,"username":"testUsername","password":"testPassword","createdAt":"testDate"}"""
+        val expected: String = """{"id":1,"emailAddress":"test@email.com","password":"testPassword","createdAt":"testDate"}"""
 
         assert(result == expected)
     }
 
     @Test
     fun `A JSON string representing a User can be read into a User data class`() {
-        val testJson: String = """{"id":1,"username":"testUsername","password":"testPassword","createdAt":"testDate"}"""
+        val testJson: String = """{"id":1,"emailAddress":"test@email.com","password":"testPassword","createdAt":"testDate"}"""
 
         val result: User = mapper.readValue(testJson)
 
         assert(result.id == 1)
-        assert(result.username == "testUsername")
+        assert(result.emailAddress == "test@email.com")
         assert(result.password == "testPassword")
         assert(result.createdAt == "testDate")
     }
