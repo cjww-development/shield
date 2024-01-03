@@ -9,6 +9,8 @@
 
 package dev.cjww.shield.shared.extensions
 
+import dev.cjww.shield.shared.models.RegexValidator
+import dev.cjww.shield.shared.models.ValidationResponse
 import java.security.spec.KeySpec
 import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
@@ -35,5 +37,25 @@ object StringSecurity {
         val hash: ByteArray = key.encoded
 
         return hash.toHexString()
+    }
+
+    fun String.validateAsPassword(rules: List<RegexValidator>): ValidationResponse {
+        if (rules.isEmpty()) {
+            return ValidationResponse(
+                success = true,
+                errorMessage = null,
+            )
+        }
+
+        val rule: RegexValidator = rules.first()
+
+        return if (rule.regex.containsMatchIn(this)) {
+            this.validateAsPassword(rules.subList(1, rules.count()))
+        } else {
+            ValidationResponse(
+                success = false,
+                errorMessage = rule.errorMessage,
+            )
+        }
     }
 }
