@@ -10,6 +10,9 @@
 package dev.cjww.shield.shared.extensions
 
 import dev.cjww.shield.shared.extensions.StringSecurity.hash
+import dev.cjww.shield.shared.extensions.StringSecurity.validateAsPassword
+import dev.cjww.shield.shared.models.RegexValidator
+import dev.cjww.shield.shared.models.ValidationResponse
 import org.junit.jupiter.api.Test
 
 class StringSecurityTests {
@@ -71,5 +74,170 @@ class StringSecurityTests {
         val result2: String = testStringToHash.hash(testSalt2)
 
         assert(result1 != result2)
+    }
+
+    @Test
+    fun `String validateAsPassword should return true when the given string contains lower case chars`() {
+        val testString: String = "TesT1ngi23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[a-z]"),
+                            "The string needs to include lowercase chars",
+                        ),
+                    ),
+            )
+
+        assert(result.success)
+        assert(result.errorMessage == null)
+    }
+
+    @Test
+    fun `String validateAsPassword should return true when the given string contains upper case chars`() {
+        val testString: String = "TesT1ngi23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[A-Z]"),
+                            "The string needs to include uppercase chars",
+                        ),
+                    ),
+            )
+
+        assert(result.success)
+        assert(result.errorMessage == null)
+    }
+
+    @Test
+    fun `String validateAsPassword should return true when the given string contains numbers`() {
+        val testString: String = "TesT1ngi23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[0-9]"),
+                            "The string needs to include numbers",
+                        ),
+                    ),
+            )
+
+        assert(result.success)
+        assert(result.errorMessage == null)
+    }
+
+    @Test
+    fun `String validateAsPassword should return true when the given string matches all rules`() {
+        val testString: String = "TesT1ngi23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[a-z]"),
+                            "The string needs to include lowercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[A-Z]"),
+                            "The string needs to include uppercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[0-9]"),
+                            "The string needs to include numbers",
+                        ),
+                    ),
+            )
+
+        assert(result.success)
+        assert(result.errorMessage == null)
+    }
+
+    @Test
+    fun `String validateAsPassword should return false when the given string contains no lowercase chars`() {
+        val testString: String = "TEST1NGI23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[a-z]"),
+                            "The string needs to include lowercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[A-Z]"),
+                            "The string needs to include uppercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[0-9]"),
+                            "The string needs to include numbers",
+                        ),
+                    ),
+            )
+
+        assert(!result.success)
+        assert(result.errorMessage == "The string needs to include lowercase chars")
+    }
+
+    @Test
+    fun `String validateAsPassword should return false when the given string contains no uppcase chars`() {
+        val testString: String = "test1ngi23"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[a-z]"),
+                            "The string needs to include lowercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[A-Z]"),
+                            "The string needs to include uppercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[0-9]"),
+                            "The string needs to include numbers",
+                        ),
+                    ),
+            )
+
+        assert(!result.success)
+        assert(result.errorMessage == "The string needs to include uppercase chars")
+    }
+
+    @Test
+    fun `String validateAsPassword should return false when the given string contains no numbers`() {
+        val testString: String = "TesTing"
+
+        val result: ValidationResponse =
+            testString.validateAsPassword(
+                rules =
+                    listOf(
+                        RegexValidator(
+                            Regex("[a-z]"),
+                            "The string needs to include lowercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[A-Z]"),
+                            "The string needs to include uppercase chars",
+                        ),
+                        RegexValidator(
+                            Regex("[0-9]"),
+                            "The string needs to include numbers",
+                        ),
+                    ),
+            )
+
+        assert(!result.success)
+        assert(result.errorMessage == "The string needs to include numbers")
     }
 }
