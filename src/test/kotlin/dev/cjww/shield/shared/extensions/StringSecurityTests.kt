@@ -13,6 +13,12 @@ import dev.cjww.shield.shared.extensions.StringSecurity.hash
 import dev.cjww.shield.shared.extensions.StringSecurity.validateAsPassword
 import dev.cjww.shield.shared.models.RegexValidator
 import dev.cjww.shield.shared.models.ValidationResponse
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldHaveLength
 import org.junit.jupiter.api.Test
 
 class StringSecurityTests {
@@ -21,8 +27,8 @@ class StringSecurityTests {
         val testSalt1: String = StringSecurity.generateRandomSalt(16)
         val testSalt2: String = StringSecurity.generateRandomSalt(32)
 
-        assert(testSalt1.count() == 16)
-        assert(testSalt2.count() == 32)
+        testSalt1.shouldHaveLength(16)
+        testSalt2.shouldHaveLength(32)
     }
 
     @Test
@@ -30,7 +36,7 @@ class StringSecurityTests {
         val testSalt1: String = StringSecurity.generateRandomSalt(16)
         val testSalt2: String = StringSecurity.generateRandomSalt(16)
 
-        assert(testSalt1 != testSalt2)
+        testSalt1.shouldNotBe(testSalt2)
     }
 
     @Test
@@ -40,7 +46,7 @@ class StringSecurityTests {
 
         val result: String = testStringToHash.hash(testSalt)
 
-        assert(result.count() == 64)
+        result.shouldHaveLength(64)
     }
 
     @Test
@@ -50,7 +56,7 @@ class StringSecurityTests {
 
         val result: String = testStringToHash.hash(testSalt)
 
-        assert(testStringToHash != result)
+        testStringToHash.shouldNotBe(result)
     }
 
     @Test
@@ -61,7 +67,7 @@ class StringSecurityTests {
         val result1: String = testStringToHash.hash(testSalt)
         val result2: String = testStringToHash.hash(testSalt)
 
-        assert(result1 == result2)
+        result1.shouldBe(result2)
     }
 
     @Test
@@ -73,7 +79,7 @@ class StringSecurityTests {
         val result1: String = testStringToHash.hash(testSalt1)
         val result2: String = testStringToHash.hash(testSalt2)
 
-        assert(result1 != result2)
+        result1.shouldNotBe(result2)
     }
 
     @Test
@@ -91,8 +97,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(result.success)
-        assert(result.errorMessage == null)
+        result.success.shouldBeTrue()
+        result.errorMessage.shouldBeNull()
     }
 
     @Test
@@ -110,8 +116,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(result.success)
-        assert(result.errorMessage == null)
+        result.success.shouldBeTrue()
+        result.errorMessage.shouldBeNull()
     }
 
     @Test
@@ -129,8 +135,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(result.success)
-        assert(result.errorMessage == null)
+        result.success.shouldBeTrue()
+        result.errorMessage.shouldBeNull()
     }
 
     @Test
@@ -156,8 +162,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(result.success)
-        assert(result.errorMessage == null)
+        result.success.shouldBeTrue()
+        result.errorMessage.shouldBeNull()
     }
 
     @Test
@@ -183,8 +189,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(!result.success)
-        assert(result.errorMessage == "The string needs to include lowercase chars")
+        result.success.shouldBeFalse()
+        result.errorMessage.shouldBe("The string needs to include lowercase chars")
     }
 
     @Test
@@ -210,8 +216,8 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(!result.success)
-        assert(result.errorMessage == "The string needs to include uppercase chars")
+        result.success.shouldBeFalse()
+        result.errorMessage.shouldBe("The string needs to include uppercase chars")
     }
 
     @Test
@@ -237,7 +243,7 @@ class StringSecurityTests {
                     ),
             )
 
-        assert(!result.success)
-        assert(result.errorMessage == "The string needs to include numbers")
+        result.success.shouldBeFalse()
+        result.errorMessage.shouldBe("The string needs to include numbers")
     }
 }

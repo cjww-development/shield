@@ -10,12 +10,13 @@
 package dev.cjww.shield.shared.models
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 class UserTests {
-    private val mapper = ObjectMapper().registerModule(KotlinModule())
+    private val mapper = ObjectMapper().registerKotlinModule()
 
     @Test
     fun `A User data class can be written to JSON`() {
@@ -31,7 +32,7 @@ class UserTests {
 
         val expected: String = """{"id":1,"emailAddress":"test@email.com","password":"testPassword","createdAt":"testDate"}"""
 
-        assert(result == expected)
+        result.shouldBe(expected)
     }
 
     @Test
@@ -40,9 +41,9 @@ class UserTests {
 
         val result: User = mapper.readValue(testJson)
 
-        assert(result.id == 1)
-        assert(result.emailAddress == "test@email.com")
-        assert(result.password == "testPassword")
-        assert(result.createdAt == "testDate")
+        result.id.shouldBe(1)
+        result.emailAddress.shouldBe("test@email.com")
+        result.password.shouldBe("testPassword")
+        result.createdAt.shouldBe("testDate")
     }
 }

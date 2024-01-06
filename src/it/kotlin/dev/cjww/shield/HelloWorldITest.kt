@@ -7,9 +7,13 @@
  *
  */
 
-package dev.cjww.shield.registration.models
+package dev.cjww.shield
 
-data class Response(
-    val message: String,
-    val errorMessage: String?,
-)
+import org.junit.jupiter.api.Test
+
+class HelloWorldITest {
+    @Test
+    fun testIntegrationTest() {
+        assert(true == true)
+    }
+}
